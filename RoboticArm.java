@@ -51,12 +51,17 @@ public class RoboticArm extends JPanel {
 
             if (autoSpinEnabled) {
                 baseAngle += autoRotationSpeed;
+                targetBaseAngle = baseAngle;
                 if (baseAngle > Math.PI * 2) {
                     baseAngle -= Math.PI * 2;
+                    targetBaseAngle = baseAngle;
                 }
                 if (baseAngle < -Math.PI * 2) {
                     baseAngle += Math.PI * 2;
+                    targetBaseAngle = baseAngle;
                 }
+            } else {
+                baseAngle += (targetBaseAngle - baseAngle) * 0.12;
             }
 
             shoulderAngle += (targetShoulderAngle - shoulderAngle) * 0.12;
@@ -78,13 +83,11 @@ public class RoboticArm extends JPanel {
                 switch (key) {
                     case KeyEvent.VK_Q -> {
                         autoSpinEnabled = false;
-                        targetBaseAngle = baseAngle;
-                        baseAngle += step;
+                        targetBaseAngle += step;
                     }
                     case KeyEvent.VK_A -> {
                         autoSpinEnabled = false;
-                        targetBaseAngle = baseAngle;
-                        baseAngle -= step;
+                        targetBaseAngle -= step;
                     }
                     case KeyEvent.VK_W -> {
                         autoSpinEnabled = false;
