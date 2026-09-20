@@ -181,7 +181,7 @@ public class RoboticArm extends JPanel {
         return new double[][]{{c, -s, 0}, {s, c, 0}, {0, 0, 1}};
     }
 
-    private double[][] multiply(double[][] a, double[][] b) {
+    private double[][] multiplyMatrices(double[][] a, double[][] b) {
         double[][] r = new double[3][3];
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -193,7 +193,7 @@ public class RoboticArm extends JPanel {
         return r;
     }
 
-    private double[] apply(double[][] m, double[] v) {
+    private double[] applyMatrix(double[][] m, double[] v) {
         return new double[]{
             m[0][0] * v[0] + m[0][1] * v[1] + m[0][2] * v[2],
             m[1][0] * v[0] + m[1][1] * v[1] + m[1][2] * v[2],
@@ -201,7 +201,7 @@ public class RoboticArm extends JPanel {
         };
     }
 
-    private double[] add(double[] a, double[] b) {
+    private double[] addVectors(double[] a, double[] b) {
         return new double[]{a[0] + b[0], a[1] + b[1], a[2] + b[2]};
     }
 
@@ -235,13 +235,13 @@ public class RoboticArm extends JPanel {
 
     private void drawSegment(Graphics2D g2, double[][] localVerts, double[][] worldRotation,
                              double[] pivot, int width, int height, Color baseColor) {
-        double[][] view = multiply(rotationX(viewRotX), rotationY(viewRotY));
+        double[][] view = multiplyMatrices(rotationX(viewRotX), rotationY(viewRotY));
         Point[] projected = new Point[localVerts.length];
         double[][] viewed = new double[localVerts.length][3];
 
         for (int i = 0; i < localVerts.length; i++) {
-            double[] world = add(pivot, apply(worldRotation, localVerts[i]));
-            viewed[i] = apply(view, world);
+            double[] world = addVectors(pivot, applyMatrix(worldRotation, localVerts[i]));
+            viewed[i] = applyMatrix(view, world);
             projected[i] = project(viewed[i], width, height);
         }
 
@@ -261,14 +261,14 @@ public class RoboticArm extends JPanel {
 
     private void drawJointRing(Graphics2D g2, double[] pivot, double[][] rotation,
                               int width, int height, double radius, Color c) {
-        double[][] view = multiply(rotationX(viewRotX), rotationY(viewRotY));
+        double[][] view = multiplyMatrices(rotationX(viewRotX), rotationY(viewRotY));
         Point[] pts = new Point[8];
 
         for (int i = 0; i < 8; i++) {
             double angle = (Math.PI / 4.0) * i;
             double[] local = {Math.cos(angle) * radius, Math.sin(angle) * radius, 0.0};
-            double[] world = add(pivot, apply(rotation, local));
-            Point p = project(apply(view, world), width, height);
+            double[] world = addVectors(pivot, applyMatrix(rotation, local));
+            Point p = project(applyMatrix(view, world), width, height);
             pts[i] = p;
         }
 
@@ -281,26 +281,26 @@ public class RoboticArm extends JPanel {
     }
 
     private void drawBaseAssembly(Graphics2D g2, double[][] baseRotation, int width, int height) {
-        double[][] view = multiply(rotationX(viewRotX), rotationY(viewRotY));
+        double[][] view = multiplyMatrices(rotationX(viewRotX), rotationY(viewRotY));
 
         double[] baseCenter = {0.0, 0.0, 0.0};
-        double[] ringA = add(baseCenter, apply(baseRotation, new double[]{0.0, 0.1, 0.0}));
-        double[] ringB = add(baseCenter, apply(baseRotation, new double[]{0.0, 0.45, 0.0}));
-        double[] ringC = add(baseCenter, apply(baseRotation, new double[]{0.0, 0.75, 0.0}));
+        double[] ringA = addVectors(baseCenter, applyMatrix(baseRotation, new double[]{0.0, 0.1, 0.0}));
+        double[] ringB = addVectors(baseCenter, applyMatrix(baseRotation, new double[]{0.0, 0.45, 0.0}));
+        double[] ringC = addVectors(baseCenter, applyMatrix(baseRotation, new double[]{0.0, 0.75, 0.0}));
 
         drawDepthRing(g2, ringA, baseRotation, 1.1, 0.9, new Color(110, 220, 255), width, height, view);
         drawDepthRing(g2, ringB, baseRotation, 0.9, 0.7, new Color(90, 180, 255), width, height, view);
         drawDepthRing(g2, ringC, baseRotation, 0.7, 0.45, new Color(150, 200, 255), width, height, view);
 
-        double[] p1 = add(baseCenter, apply(baseRotation, new double[]{0.85, 0.1, 0.85}));
-        double[] p2 = add(baseCenter, apply(baseRotation, new double[]{-0.85, 0.1, 0.85}));
-        double[] p3 = add(baseCenter, apply(baseRotation, new double[]{-0.85, 0.1, -0.85}));
-        double[] p4 = add(baseCenter, apply(baseRotation, new double[]{0.85, 0.1, -0.85}));
+        double[] p1 = addVectors(baseCenter, applyMatrix(baseRotation, new double[]{0.85, 0.1, 0.85}));
+        double[] p2 = addVectors(baseCenter, applyMatrix(baseRotation, new double[]{-0.85, 0.1, 0.85}));
+        double[] p3 = addVectors(baseCenter, applyMatrix(baseRotation, new double[]{-0.85, 0.1, -0.85}));
+        double[] p4 = addVectors(baseCenter, applyMatrix(baseRotation, new double[]{0.85, 0.1, -0.85}));
 
-        Point q1 = project(apply(view, p1), width, height);
-        Point q2 = project(apply(view, p2), width, height);
-        Point q3 = project(apply(view, p3), width, height);
-        Point q4 = project(apply(view, p4), width, height);
+        Point q1 = project(applyMatrix(view, p1), width, height);
+        Point q2 = project(applyMatrix(view, p2), width, height);
+        Point q3 = project(applyMatrix(view, p3), width, height);
+        Point q4 = project(applyMatrix(view, p4), width, height);
 
         g2.setColor(new Color(110, 220, 255));
         g2.setStroke(new BasicStroke(1.8f));
@@ -318,10 +318,10 @@ public class RoboticArm extends JPanel {
 
         for (int i = 0; i < 12; i++) {
             double angle = (Math.PI / 6.0) * i;
-            double[] o = apply(rotation, new double[]{Math.cos(angle) * outerRadius, 0.0, Math.sin(angle) * outerRadius});
-            double[] iLocal = apply(rotation, new double[]{Math.cos(angle) * innerRadius, 0.0, Math.sin(angle) * innerRadius});
-            outer[i] = project(apply(view, add(pivot, o)), width, height);
-            inner[i] = project(apply(view, add(pivot, iLocal)), width, height);
+            double[] o = applyMatrix(rotation, new double[]{Math.cos(angle) * outerRadius, 0.0, Math.sin(angle) * outerRadius});
+            double[] iLocal = applyMatrix(rotation, new double[]{Math.cos(angle) * innerRadius, 0.0, Math.sin(angle) * innerRadius});
+            outer[i] = project(applyMatrix(view, addVectors(pivot, o)), width, height);
+            inner[i] = project(applyMatrix(view, addVectors(pivot, iLocal)), width, height);
         }
 
         g2.setColor(c);
@@ -361,12 +361,12 @@ public class RoboticArm extends JPanel {
         double[] origin = {0, 0, 0};
         double[][] baseRotation = rotationY(baseAngle);
         drawBaseAssembly(g2, baseRotation, width, height);
-        double[] shoulderPivot = add(origin, apply(baseRotation, new double[]{0, baseSize[2], 0}));
-        double[][] shoulderRotation = multiply(baseRotation, rotationZ(shoulderAngle));
-        double[] elbowPivot = add(shoulderPivot, apply(shoulderRotation, new double[]{0, upperArmSize[2], 0}));
-        double[][] elbowRotation = multiply(shoulderRotation, rotationZ(elbowAngle));
-        double[] wristPivot = add(elbowPivot, apply(elbowRotation, new double[]{0, forearmSize[2], 0}));
-        double[][] wristRotation = multiply(elbowRotation, rotationZ(wristAngle));
+        double[] shoulderPivot = addVectors(origin, applyMatrix(baseRotation, new double[]{0, baseSize[2], 0}));
+        double[][] shoulderRotation = multiplyMatrices(baseRotation, rotationZ(shoulderAngle));
+        double[] elbowPivot = addVectors(shoulderPivot, applyMatrix(shoulderRotation, new double[]{0, upperArmSize[2], 0}));
+        double[][] elbowRotation = multiplyMatrices(shoulderRotation, rotationZ(elbowAngle));
+        double[] wristPivot = addVectors(elbowPivot, applyMatrix(elbowRotation, new double[]{0, forearmSize[2], 0}));
+        double[][] wristRotation = multiplyMatrices(elbowRotation, rotationZ(wristAngle));
 
         g2.setColor(new Color(100, 220, 255, 150));
         g2.drawOval(width / 2 - 48, height - 100, 96, 24);
@@ -396,7 +396,7 @@ public class RoboticArm extends JPanel {
         double leftSpread = -0.18 - clawOpen * 0.12;
         double rightSpread = 0.18 + clawOpen * 0.12;
 
-        double[] base = add(pivot, apply(wristRotation, new double[]{0, handSize[2] * 0.2, -0.12}));
+        double[] base = addVectors(pivot, applyMatrix(wristRotation, new double[]{0, handSize[2] * 0.2, -0.12}));
         drawLink(g2, pivot, base, wristRotation, width, height, new Color(255, 180, 140));
 
         double[][] palm = {
@@ -448,10 +448,10 @@ public class RoboticArm extends JPanel {
     private void drawWireBox(Graphics2D g2, double[][] localVerts, double[][] rotation, double[] pivot,
                              int width, int height, Color c) {
         Point[] projected = new Point[localVerts.length];
-        double[][] view = multiply(rotationX(viewRotX), rotationY(viewRotY));
+        double[][] view = multiplyMatrices(rotationX(viewRotX), rotationY(viewRotY));
         for (int i = 0; i < localVerts.length; i++) {
-            double[] world = add(pivot, apply(rotation, localVerts[i]));
-            double[] viewed = apply(view, world);
+            double[] world = addVectors(pivot, applyMatrix(rotation, localVerts[i]));
+            double[] viewed = applyMatrix(view, world);
             projected[i] = project(viewed, width, height);
         }
 
@@ -469,11 +469,11 @@ public class RoboticArm extends JPanel {
 
     private void drawFinger(Graphics2D g2, double[][] points, double[][] wristRotation,
                             double[] pivot, int width, int height, Color c) {
-        double[][] view = multiply(rotationX(viewRotX), rotationY(viewRotY));
+        double[][] view = multiplyMatrices(rotationX(viewRotX), rotationY(viewRotY));
         Point[] projected = new Point[points.length];
         for (int i = 0; i < points.length; i++) {
-            double[] world = add(pivot, apply(wristRotation, points[i]));
-            double[] viewed = apply(view, world);
+            double[] world = addVectors(pivot, applyMatrix(wristRotation, points[i]));
+            double[] viewed = applyMatrix(view, world);
             projected[i] = project(viewed, width, height);
         }
 
@@ -486,11 +486,11 @@ public class RoboticArm extends JPanel {
 
     private void drawLink(Graphics2D g2, double[] a, double[] b, double[][] rotation,
                           int width, int height, Color c) {
-        double[][] view = multiply(rotationX(viewRotX), rotationY(viewRotY));
-        double[] aWorld = add(a, apply(rotation, new double[]{0, 0, 0}));
-        double[] bWorld = add(b, apply(rotation, new double[]{0, 0, 0}));
-        Point p1 = project(apply(view, aWorld), width, height);
-        Point p2 = project(apply(view, bWorld), width, height);
+        double[][] view = multiplyMatrices(rotationX(viewRotX), rotationY(viewRotY));
+        double[] aWorld = addVectors(a, applyMatrix(rotation, new double[]{0, 0, 0}));
+        double[] bWorld = addVectors(b, applyMatrix(rotation, new double[]{0, 0, 0}));
+        Point p1 = project(applyMatrix(view, aWorld), width, height);
+        Point p2 = project(applyMatrix(view, bWorld), width, height);
 
         g2.setColor(c);
         g2.setStroke(new BasicStroke(2.2f));
@@ -500,25 +500,25 @@ public class RoboticArm extends JPanel {
     private void drawJointStruts(Graphics2D g2, double[] aPivot, double[] bPivot,
                                 double[][] aRotation, double[][] bRotation,
                                 int width, int height, Color c) {
-        double[][] view = multiply(rotationX(viewRotX), rotationY(viewRotY));
+        double[][] view = multiplyMatrices(rotationX(viewRotX), rotationY(viewRotY));
 
-        double[] p1 = add(aPivot, apply(aRotation, new double[]{-0.18, 0.0, -0.18}));
-        double[] p2 = add(bPivot, apply(bRotation, new double[]{-0.18, 0.0, -0.18}));
-        double[] p3 = add(aPivot, apply(aRotation, new double[]{0.18, 0.0, -0.18}));
-        double[] p4 = add(bPivot, apply(bRotation, new double[]{0.18, 0.0, -0.18}));
-        double[] p5 = add(aPivot, apply(aRotation, new double[]{-0.18, 0.0, 0.18}));
-        double[] p6 = add(bPivot, apply(bRotation, new double[]{-0.18, 0.0, 0.18}));
-        double[] p7 = add(aPivot, apply(aRotation, new double[]{0.18, 0.0, 0.18}));
-        double[] p8 = add(bPivot, apply(bRotation, new double[]{0.18, 0.0, 0.18}));
+        double[] p1 = addVectors(aPivot, applyMatrix(aRotation, new double[]{-0.18, 0.0, -0.18}));
+        double[] p2 = addVectors(bPivot, applyMatrix(bRotation, new double[]{-0.18, 0.0, -0.18}));
+        double[] p3 = addVectors(aPivot, applyMatrix(aRotation, new double[]{0.18, 0.0, -0.18}));
+        double[] p4 = addVectors(bPivot, applyMatrix(bRotation, new double[]{0.18, 0.0, -0.18}));
+        double[] p5 = addVectors(aPivot, applyMatrix(aRotation, new double[]{-0.18, 0.0, 0.18}));
+        double[] p6 = addVectors(bPivot, applyMatrix(bRotation, new double[]{-0.18, 0.0, 0.18}));
+        double[] p7 = addVectors(aPivot, applyMatrix(aRotation, new double[]{0.18, 0.0, 0.18}));
+        double[] p8 = addVectors(bPivot, applyMatrix(bRotation, new double[]{0.18, 0.0, 0.18}));
 
-        Point q1 = project(apply(view, p1), width, height);
-        Point q2 = project(apply(view, p2), width, height);
-        Point q3 = project(apply(view, p3), width, height);
-        Point q4 = project(apply(view, p4), width, height);
-        Point q5 = project(apply(view, p5), width, height);
-        Point q6 = project(apply(view, p6), width, height);
-        Point q7 = project(apply(view, p7), width, height);
-        Point q8 = project(apply(view, p8), width, height);
+        Point q1 = project(applyMatrix(view, p1), width, height);
+        Point q2 = project(applyMatrix(view, p2), width, height);
+        Point q3 = project(applyMatrix(view, p3), width, height);
+        Point q4 = project(applyMatrix(view, p4), width, height);
+        Point q5 = project(applyMatrix(view, p5), width, height);
+        Point q6 = project(applyMatrix(view, p6), width, height);
+        Point q7 = project(applyMatrix(view, p7), width, height);
+        Point q8 = project(applyMatrix(view, p8), width, height);
 
         g2.setColor(c);
         g2.setStroke(new BasicStroke(2.2f));
@@ -531,25 +531,25 @@ public class RoboticArm extends JPanel {
     private void drawTaperedForearm(Graphics2D g2, double[] aPivot, double[] bPivot,
                                    double[][] aRotation, double[][] bRotation,
                                    int width, int height, Color c) {
-        double[][] view = multiply(rotationX(viewRotX), rotationY(viewRotY));
+        double[][] view = multiplyMatrices(rotationX(viewRotX), rotationY(viewRotY));
 
-        double[] p1 = add(aPivot, apply(aRotation, new double[]{-0.16, 0.0, -0.12}));
-        double[] p2 = add(bPivot, apply(bRotation, new double[]{-0.12, 0.0, -0.10}));
-        double[] p3 = add(aPivot, apply(aRotation, new double[]{0.16, 0.0, -0.12}));
-        double[] p4 = add(bPivot, apply(bRotation, new double[]{0.12, 0.0, -0.10}));
-        double[] p5 = add(aPivot, apply(aRotation, new double[]{-0.16, 0.0, 0.12}));
-        double[] p6 = add(bPivot, apply(bRotation, new double[]{-0.12, 0.0, 0.10}));
-        double[] p7 = add(aPivot, apply(aRotation, new double[]{0.16, 0.0, 0.12}));
-        double[] p8 = add(bPivot, apply(bRotation, new double[]{0.12, 0.0, 0.10}));
+        double[] p1 = addVectors(aPivot, applyMatrix(aRotation, new double[]{-0.16, 0.0, -0.12}));
+        double[] p2 = addVectors(bPivot, applyMatrix(bRotation, new double[]{-0.12, 0.0, -0.10}));
+        double[] p3 = addVectors(aPivot, applyMatrix(aRotation, new double[]{0.16, 0.0, -0.12}));
+        double[] p4 = addVectors(bPivot, applyMatrix(bRotation, new double[]{0.12, 0.0, -0.10}));
+        double[] p5 = addVectors(aPivot, applyMatrix(aRotation, new double[]{-0.16, 0.0, 0.12}));
+        double[] p6 = addVectors(bPivot, applyMatrix(bRotation, new double[]{-0.12, 0.0, 0.10}));
+        double[] p7 = addVectors(aPivot, applyMatrix(aRotation, new double[]{0.16, 0.0, 0.12}));
+        double[] p8 = addVectors(bPivot, applyMatrix(bRotation, new double[]{0.12, 0.0, 0.10}));
 
-        Point q1 = project(apply(view, p1), width, height);
-        Point q2 = project(apply(view, p2), width, height);
-        Point q3 = project(apply(view, p3), width, height);
-        Point q4 = project(apply(view, p4), width, height);
-        Point q5 = project(apply(view, p5), width, height);
-        Point q6 = project(apply(view, p6), width, height);
-        Point q7 = project(apply(view, p7), width, height);
-        Point q8 = project(apply(view, p8), width, height);
+        Point q1 = project(applyMatrix(view, p1), width, height);
+        Point q2 = project(applyMatrix(view, p2), width, height);
+        Point q3 = project(applyMatrix(view, p3), width, height);
+        Point q4 = project(applyMatrix(view, p4), width, height);
+        Point q5 = project(applyMatrix(view, p5), width, height);
+        Point q6 = project(applyMatrix(view, p6), width, height);
+        Point q7 = project(applyMatrix(view, p7), width, height);
+        Point q8 = project(applyMatrix(view, p8), width, height);
 
         g2.setColor(c);
         g2.setStroke(new BasicStroke(2.0f));
@@ -559,17 +559,6 @@ public class RoboticArm extends JPanel {
         g2.drawLine(q7.x, q7.y, q8.x, q8.y);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            RoboticArm panel = new RoboticArm();
-            JFrame frame = new JFrame("Smart Robotic Arm");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setContentPane(panel);
-            frame.pack();
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
-            panel.requestFocusInWindow();
-        });
-    }
+
 
 }
