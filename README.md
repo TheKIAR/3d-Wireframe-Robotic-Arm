@@ -1,5 +1,8 @@
 # 3D Wireframe Robotic Arm
 
+![Java CI](https://github.com/TheKIAR/3d-Wireframe-Robotic-Arm/actions/workflows/ci.yml/badge.svg)
+
+
 A Java Swing project that renders an interactive robotic arm from scratch using 3D mathematics and a custom wireframe renderer.
 
 ## Features
