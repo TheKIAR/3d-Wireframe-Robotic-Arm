@@ -1,5 +1,6 @@
 # 3D Wireframe Robotic Arm
 
+![Project Preview](assets/project-preview.svg)
 ![Java CI](https://github.com/TheKIAR/3d-Wireframe-Robotic-Arm/actions/workflows/ci.yml/badge.svg)
 
 
