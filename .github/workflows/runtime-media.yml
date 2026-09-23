@@ -58,7 +58,7 @@ jobs:
           JAVA
           javac Capture.java
           xvfb-run -a -s "-screen 0 1200x900x24" java Capture
-          magick -delay 9 -loop 0 assets/capture-frames/frame-*.png assets/demo.gif
+          convert -delay 9 -loop 0 assets/capture-frames/frame-*.png assets/demo.gif
           rm -rf assets/capture-frames Capture.java
       - name: Commit runtime media
         run: |
