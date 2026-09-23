@@ -87,3 +87,14 @@ This project demonstrates:
 - Inverse kinematics
 - Path planning for the end effector
 - Export/import of robotic-arm poses
+
+
+## 🌐 Links
+
+**Portfolio:** https://ragibashhab.netlify.app/
+
+**GitHub:** https://github.com/TheKIAR
+
+**LinkedIn:** https://www.linkedin.com/in/md-ragib-ashhab-768a19240/
+
+**Linktree:** https://linktr.ee/RagibAshhab
