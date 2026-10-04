@@ -2,7 +2,7 @@
 
 <p align="center"><strong>Java • Swing/AWT • 3D Mathematics • Computer Graphics</strong><br><em>A robotic arm rendered from scratch — no external 3D engine.</em></p>
 
-<p align="center"><a href="https://github.com/TheKIAR/3d-Wireframe-Robotic-Arm"><img src="https://github.com/TheKIAR/3d-Wireframe-Robotic-Arm/blob/main/assets/runtime-screenshot.png?raw=true" alt="3D Wireframe Robotic Arm runtime" width="820"></a></p>
+<p align="center"><a href="https://github.com/TheKIAR/3d-Wireframe-Robotic-Arm"><img src="./assets/runtime-screenshot.png" alt="3D Wireframe Robotic Arm runtime" width="820"></a></p>
 <p align="center"><img src="https://github.com/TheKIAR/3d-Wireframe-Robotic-Arm/actions/workflows/ci.yml/badge.svg" alt="Java CI"></p>
 
 ## 🎬 Demo
