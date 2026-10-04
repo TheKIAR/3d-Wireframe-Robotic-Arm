@@ -1,106 +1,126 @@
-# 3D Wireframe Robotic Arm
+# 🦾 3D Wireframe Robotic Arm
 
-![Runtime Screenshot](assets/runtime-screenshot.png)
+<p align="center">
+  <img src="assets/runtime-screenshot.png" alt="3D Wireframe Robotic Arm runtime" width="850">
+</p>
 
-![Runtime Demo](assets/demo.gif)
-![Java CI](https://github.com/TheKIAR/3d-Wireframe-Robotic-Arm/actions/workflows/ci.yml/badge.svg)
+<p align="center">
+  <strong>Java • 3D Mathematics • Computer Graphics • Interactive Animation</strong><br>
+  A robotic arm rendered from scratch with Java Swing/AWT and custom 3D transformations.
+</p>
 
+<p align="center">
+  <a href="https://github.com/TheKIAR/3d-Wireframe-Robotic-Arm/actions/workflows/ci.yml"><img src="https://github.com/TheKIAR/3d-Wireframe-Robotic-Arm/actions/workflows/ci.yml/badge.svg" alt="Java CI"></a>
+  <img src="https://img.shields.io/badge/Java-17%2B-orange?logo=openjdk" alt="Java 17+">
+  <img src="https://img.shields.io/badge/Graphics-3D-blue" alt="3D Graphics">
+</p>
 
-A Java Swing project that renders an interactive robotic arm from scratch using 3D mathematics and a custom wireframe renderer.
+---
 
-## Features
+## 🎯 What this project does
 
-- 3D robotic-arm model built from geometric primitives
-- Rotation matrices for X, Y and Z axes
-- Matrix multiplication and vector transformations
-- Perspective projection from 3D coordinates to the 2D screen
-- Hierarchical base, shoulder, elbow, wrist and claw movement
-- Smooth joint interpolation
-- Automatic base rotation with manual override
-- Workspace and joint-angle limits
-- Adjustable zoom
-- Animated claw
-- Smart pose
-- Custom rendering with Java Swing/AWT — no external 3D engine
+This project turns linear algebra and computer-graphics theory into an interactive robotic arm you can control in real time.
 
-## Controls
+No external 3D engine is used — the renderer, transformations and projection are implemented with standard Java and Swing/AWT.
+
+## 🖼️ Runtime preview
+
+<p align="center">
+  <img src="assets/runtime-screenshot.png" alt="Robotic arm runtime screenshot" width="850">
+</p>
+
+<p align="center">
+  <img src="assets/demo.gif" alt="Robotic arm runtime demo" width="850">
+</p>
+
+## ⚙️ Core features
+
+- 🧱 3D robotic-arm model built from geometric primitives
+- 🔄 X/Y/Z rotation matrices
+- ✖️ Matrix multiplication and vector transformations
+- 👁️ Perspective projection from 3D to 2D
+- 🦾 Hierarchical base, shoulder, elbow, wrist and claw movement
+- 🎞️ Smooth joint interpolation
+- 🔁 Automatic base rotation with manual override
+- 📐 Workspace and joint-angle limits
+- 🔍 Adjustable zoom
+- 🤏 Animated claw
+- ✨ Smart pose
+
+## 🎮 Controls
 
 | Key | Action |
 |---|---|
-| Q / A | Rotate base |
-| W / S | Shoulder up / down |
-| E / D | Elbow up / down |
-| R / F | Wrist up / down |
-| G / H | Open / close claw |
-| Z / X | Zoom out / in |
-| M | Smart pose |
+| **Q / A** | Rotate base |
+| **W / S** | Shoulder up / down |
+| **E / D** | Elbow up / down |
+| **R / F** | Wrist up / down |
+| **G / H** | Open / close claw |
+| **Z / X** | Zoom out / in |
+| **M** | Smart pose |
 
 After manual input, automatic base rotation resumes after a short idle period.
 
-## How the 3D Rendering Works
+## 🧮 Rendering pipeline
 
-The renderer follows a simple pipeline:
+```text
+Local 3D Geometry
+       ↓
+Joint Rotation Matrices
+       ↓
+World-Space Transformation
+       ↓
+Camera / View Rotation
+       ↓
+Perspective Projection
+       ↓
+2D Swing Canvas
+```
 
-1. Define arm parts as local 3D vertices.
-2. Apply joint rotation matrices.
-3. Translate each part to its world-space pivot.
-4. Apply the fixed camera/view rotation.
-5. Project 3D coordinates onto the 2D Swing panel using perspective.
-6. Connect projected vertices with line segments to create the wireframe.
+For a rotation matrix **R** and vector **v**, the transformed vector is **Rv**.
 
-For a rotation matrix R and vector v, the transformed vector is calculated as Rv.
+## 🛠️ Run locally
 
-## Project Structure
+**Requirements:** Java 17+.
 
-- App.java — application entry point and Swing window
-- RoboticArm.java — robotic-arm model, transformations, animation and rendering
-
-## Requirements
-
-- Java 17 or newer
-- Standard Java Swing/AWT libraries
-
-## Run
-
-Compile both Java files:
-
-~~~bash
+```bash
 javac App.java RoboticArm.java
 java App
-~~~
+```
 
-Or open the project in IntelliJ IDEA, Eclipse, VS Code or another Java IDE and run App.
+Or run `App` from IntelliJ IDEA, Eclipse, VS Code or another Java IDE.
 
-## Portfolio Focus
+## 📁 Project structure
 
-This project demonstrates:
+```text
+App.java          # Application entry point
+RoboticArm.java   # Model, transformations, animation and rendering
+```
 
-- Java OOP
-- 3D mathematics
-- Linear algebra
-- Matrix transformations
-- Computer graphics fundamentals
-- Event-driven programming
-- Animation and interpolation
-- Custom rendering
+## 🧠 What it demonstrates
 
-## Possible Future Improvements
+**Programming:** Java OOP · event-driven programming · animation
 
-- Mouse-controlled camera rotation
+**Mathematics:** linear algebra · matrices · vectors · transformations
+
+**Graphics:** 3D coordinates · perspective projection · custom rendering
+
+## 🚀 Future ideas
+
+- Mouse-controlled camera
 - Mouse-wheel zoom
 - Camera reset
 - Multiple projection modes
 - Inverse kinematics
-- Path planning for the end effector
-- Export/import of robotic-arm poses
+- End-effector path planning
+- Pose export/import
 
+## 👋 Connect
 
-## 🌐 Links
+Built by **Md. Ragib Ashhab**.
 
-**Portfolio:** https://ragibashhab.netlify.app/
+🌐 [Portfolio](https://ragibashhab.netlify.app/) · 💼 [LinkedIn](https://www.linkedin.com/in/md-ragib-ashhab-768a19240/) · 🔗 [Linktree](https://linktr.ee/RagibAshhab) · 🐙 [GitHub](https://github.com/TheKIAR)
 
-**GitHub:** https://github.com/TheKIAR
+---
 
-**LinkedIn:** https://www.linkedin.com/in/md-ragib-ashhab-768a19240/
-
-**Linktree:** https://linktr.ee/RagibAshhab
+> **From matrices to motion — making computer graphics tangible.**
