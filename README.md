@@ -5,6 +5,12 @@
 <p align="center"><a href="https://github.com/TheKIAR/3d-Wireframe-Robotic-Arm"><img src="https://github.com/TheKIAR/3d-Wireframe-Robotic-Arm/blob/main/assets/runtime-screenshot.png?raw=true" alt="3D Wireframe Robotic Arm runtime" width="820"></a></p>
 <p align="center"><img src="https://github.com/TheKIAR/3d-Wireframe-Robotic-Arm/actions/workflows/ci.yml/badge.svg" alt="Java CI"></p>
 
+## 🎬 Demo
+
+![3D Wireframe Robotic Arm demo](./assets/demo.gif)
+
+The demo shows the arm responding to controls, joint rotation, animation and Smart Pose.
+
 ## 👋 About the project
 An interactive Java graphics project that turns linear algebra and computer-graphics theory into a robotic arm you can control in real time.
 
